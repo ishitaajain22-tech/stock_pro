@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  .nav-link{
+    margin-left: 40px;
+  }
+  
+   #supportHero{
+    background-color: rgb(56, 126, 209);
+    color: white;
+  }
+
+*{
+  color: #424242;
+}
+  
+ 
+
+/* FAQs css */
+.custom-accordion-button {
+  background-color: transparent; /* Remove background color */
+  color: #000; /* Set text color */
+  border: none; /* Remove border */
+}
+
+.custom-accordion-button:focus {
+  box-shadow: none; /* Remove focus outline */
+}
+
+.custom-accordion-button:not(.collapsed) {
+  color: #000; /* Set text color when expanded */
+  background-color: transparent; /* Keep background transparent when expanded */
+}
