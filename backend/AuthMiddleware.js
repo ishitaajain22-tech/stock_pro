@@ -1,19 +1,49 @@
 const jwt = require("jsonwebtoken");
-const User = require("./models/UserModel");
+let User;
 
-const verifyUser = async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) return res.json({ status: false });
+try {
+    User = require("../models/UserModel");
+} catch (error) {
+    console.error('UserModel not found, creating fallback');
+    User = null;
+}
 
-  try {
-    const decoded = jwt.verify(token, "your-secret-key"); // use your token secret
-    const user = await User.findById(decoded.id).select("-password"); // ✅ fetch full user
-    if (!user) return res.json({ status: false });
+const verifyUserForZerodha = async (req, res, next) => {
+    try {
+        // Get token from cookies (your existing method)
+        let token = req.cookies.token;
+        
+        if (!token) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Access denied. Please login first.' 
+            });
+        }
 
-    return res.json({ status: true, user }); // ✅ send full user object
-  } catch (err) {
-    return res.json({ status: false });
-  }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
+        
+        if (User) {
+            const user = await User.findById(decoded.id).select("-password");
+            if (!user) {
+                return res.status(401).json({ 
+                    success: false, 
+                    message: 'Invalid token. User not found.' 
+                });
+            }
+            req.user = user;
+        } else {
+            // Fallback if User model not available
+            req.user = { _id: decoded.id, id: decoded.id };
+        }
+
+        next();
+    } catch (error) {
+        console.error('Auth middleware error:', error);
+        return res.status(401).json({ 
+            success: false, 
+            message: 'Invalid token.' 
+        });
+    }
 };
 
-module.exports = { verifyUser };
+module.exports = { verifyUserForZerodha };
