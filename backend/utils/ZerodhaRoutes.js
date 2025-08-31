@@ -4,7 +4,7 @@ let verifyUserForZerodha;
 
 try {
     ZerodhaController = require('../utils/ZerodhaController');
-    const { verifyUserForZerodha: authMiddleware } = require('../AuthMiddleware');
+    const { verifyUserForZerodha: authMiddleware } = require('../AuthController');
     verifyUserForZerodha = authMiddleware;
 } catch (error) {
     console.error('Zerodha dependencies not found:', error);

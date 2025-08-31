@@ -1,13 +1,22 @@
-const { SignupAuth, LoginAuth } = require('./AuthController');
-const {verifyUser} = require('./AuthMiddleware');
-const router = require('express').Router();
+const express = require("express");
+const { verifyUser } = require("./AuthMiddleware");
+const { SignupAuth, LoginAuth } = require("./AuthController");
 
-router.post('/', verifyUser);
-router.post('/signup', SignupAuth);
-router.post('/login', LoginAuth);
-router.get('/', (req, res) => {
-  res.send('API is running 🎉');
+const router = express.Router();
+
+// Signup route
+router.post("/signup", SignupAuth);
+
+// Login route
+router.post("/login", LoginAuth);
+
+// Example protected route
+router.post("/profile", verifyUser, (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "User verified successfully",
+        user: req.user
+    });
 });
-
 
 module.exports = router;
